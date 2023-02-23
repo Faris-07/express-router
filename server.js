@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express()
 const port = 3000
+const { check, validationResult } = require("express-validator");
 const userRouter = require("../routes/users");
 const fruitRouter = require("../routes/fruits");
 

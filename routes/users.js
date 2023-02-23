@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { check, validationResult } = require("express-validator");
 
 let users = [
     {
@@ -15,7 +16,7 @@ let users = [
         age: 27
     },
 
-    
+
     {
         name: "User 4",
         age: 22
@@ -33,15 +34,15 @@ router.get('/:id', (req, res) => {
     res.json(findUser);
 })
 
-router.post('/', [check("name").not().isEmpty().trim()], (req, res) => {
+router.post("/", [check("name").trim().not().isEmpty()], (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-        res.json({error: errors.array()})
+    if (!errors.isEmpty()) {
+      res.status(400).send({ errors: errors.array() });
     } else {
-        users.push(req.body);
-        res.json(users);
+      users.push(req.body);
+      res.status(201).send("User has been created");
     }
-})
+  });
 
 router.put('/:id', (req, res) => {
     let id = req.params.id - 1;
